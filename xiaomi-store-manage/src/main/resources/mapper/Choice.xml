@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.manage.dao.ChoiceDao">
+    <sql id="SelectPrefix">
+        select id,
+               name,
+               price,
+               old_price,
+               option_id
+        from choice
+    </sql>
+    <insert id="save">
+        insert into choice (name,price,old_price,option_id)
+        values (#{name}, #{price}, #{oldPrice}, #{optionId})
+    </insert>
+    <insert id="saveWithUniqueId">
+        insert into choice (id,name,price,old_price,option_id)
+        values (#{id}, #{name}, #{price}, #{oldPrice}, #{optionId})
+    </insert>
+    <update id="update">
+        update choice
+        set name      = #{name},
+            price     = #{price},
+            old_price = #{oldPrice},
+            option_id = #{optionId}
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from choice where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from choice where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findAll" resultType="Choice">
+        <include refid="SelectPrefix"/>
+    </select>
+    <select id="findById" resultType="Choice">
+        <include refid="SelectPrefix"/>
+        where id = #{id}
+    </select>
+    <select id="findByCondition" resultType="Choice">
+        <include refid="SelectPrefix"/>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>

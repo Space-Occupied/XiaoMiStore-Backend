@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.manage.dao.OptionDao">
+    <sql id="SelectPrefix">
+        select id,
+               name,
+               product_id
+        from `option`
+    </sql>
+    <insert id="save">
+        insert into `option` (product_id, name)
+        values (#{productId}, #{name})
+    </insert>
+    <insert id="saveWithUniqueId">
+        insert into `option` (id, name, product_id)
+        values (#{id}, #{name}, #{productId})
+    </insert>
+    <update id="update">
+        update `option`
+        set name = #{name},
+            product_id = #{productId}
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from `option` where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from `option` where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findAll" resultType="Option">
+        <include refid="SelectPrefix"/>
+    </select>
+    <select id="findById" resultType="Option">
+        <include refid="SelectPrefix"/>
+        where id = #{id}
+    </select>
+    <select id="findByCondition" resultType="Option">
+        <include refid="SelectPrefix"/>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>

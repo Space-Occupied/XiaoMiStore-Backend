@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.user.dao.ProductDetailDao">
+
+    <resultMap id="productDetailMap" type="com.darkquantum.xiaomistore.user.model.ProductDetail">
+        <id property="description" column="description"/>
+        <id property="min_price" column="price"/>
+        <id property="min_old_price" column="old_price"/>
+        <id property="desc_pre" column="desc_pre"/>
+        <id property="pname" column="name"/>
+    </resultMap>
+    <resultMap id="productImagePathMap" type="com.darkquantum.xiaomistore.user.model.ProductImagePath">
+        <id property="img_path" column="url"/>
+    </resultMap>
+    <resultMap id="productOptionMap" type="com.darkquantum.xiaomistore.user.model.ProductOption">
+        <id property="oid" column="id"/>
+        <id property="option_name" column="name"/>
+    </resultMap>
+    <resultMap id="productChoiceMap" type="com.darkquantum.xiaomistore.user.model.ProductChoice">
+        <id property="cid" column="id"/>
+        <id property="price" column="price"/>
+        <id property="old_price" column="old_price"/>
+        <id property="choice_name" column="name"/>
+    </resultMap>
+    <select id="findById" resultType="Long">
+        select id from product
+        where temp_pid = #{id}
+    </select>
+    <select id="findProductDetail" resultMap="productDetailMap">
+        select description, price, old_price, desc_pre, name from product
+        where id = #{id}
+    </select>
+    <select id="findProductImagePath" resultMap="productImagePathMap">
+        select url from image
+        where sub_id = #{id} and type = 'product'
+    </select>
+    <select id="findProductOption" resultMap="productOptionMap">
+        select id, name from `option`
+        where product_id = #{id}
+    </select>
+    <select id="findProductChoice" resultMap="productChoiceMap">
+        select id, name, price, old_price from choice
+        where option_id = #{id}
+    </select>
+
+</mapper>

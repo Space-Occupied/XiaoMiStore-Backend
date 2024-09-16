@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.remote.dao.ProductCategoryDao">
+    <sql id="SelectPrefix">
+        select id,
+               name,
+               pid,
+               is_del
+        from product_category
+    </sql>
+    <insert id="save">
+        insert into product_category (name, pid, is_del)
+        values (#{name}, #{pid}, #{isDel})
+    </insert>
+    <update id="update">
+        update product_category
+        set name = #{name},
+            pid = #{pid},
+            is_del = #{isDel}
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from product_category where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from product_category where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findAll" resultType="ProductCategory">
+        <include refid="SelectPrefix"/>
+    </select>
+    <select id="findById" resultType="ProductCategory">
+        <include refid="SelectPrefix"/>
+        where id = #{id}
+    </select>
+    <select id="findByCondition" resultType="ProductCategory">
+        <include refid="SelectPrefix"/>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>

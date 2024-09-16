@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.manage.dao.FavoriteDao">
+    <sql id="SelectPrefix">
+        select id,
+               user_id,
+               product_id,
+               add_time
+        from favorite
+    </sql>
+    <insert id="save">
+        insert into favorite (user_id, product_id, add_time)
+        values (#{userId}, #{productId}, now())
+    </insert>
+    <insert id="saveWithUniqueId">
+        insert into favorite (id, user_id, product_id, add_time)
+        values (#{id}, #{userId}, #{productId}, now())
+    </insert>
+    <update id="update">
+        update favorite
+        set user_id = #{userId},
+            product_id = #{productId},
+            add_time = #{addTime}
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from favorite where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from favorite where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findAll" resultType="Favorite">
+        <include refid="SelectPrefix"/>
+    </select>
+    <select id="findById" resultType="Favorite">
+        <include refid="SelectPrefix"/>
+        where id = #{id}
+    </select>
+    <select id="findByCondition" resultType="Favorite">
+        <include refid="SelectPrefix"/>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>

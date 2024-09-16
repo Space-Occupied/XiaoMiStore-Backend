@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: xiaomi-store-remote
+  devtools:
+    livereload:
+      port: 35732
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/xiaomi_store?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+
+server:
+  port: 9000
+
+mybatis:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.darkquantum.xiaomistore.common.model
+  configuration:
+    map-underscore-to-camel-case: true
+    log-prefix: mybatis.
+    log-impl: org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl
+
+dubbo:
+  application:
+    name: ${spring.application.name}
+    qos-port: 22222
+  protocol:
+    name: dubbo
+    port: 20880
+  registry:
+    address: zookeeper://localhost:2181

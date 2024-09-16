@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.manage.dao.CartDao">
+    <sql id="SelectPrefix">
+        select id,
+               user_id,
+               product_id,
+               quantity,
+               full_name
+        from cart
+    </sql>
+    <insert id="save">
+        insert into cart (user_id, product_id, quantity, full_name)
+        values (#{userId}, #{productId}, #{quantity}, #{fullName})
+    </insert>
+    <insert id="saveWithUniqueId">
+        insert into cart (id, user_id, product_id, quantity, full_name)
+        values (#{id}, #{userId}, #{productId}, #{quantity}, #{fullName})
+    </insert>
+    <update id="update">
+        update cart
+        set user_id = #{userId},
+            product_id = #{productId},
+            quantity = #{quantity},
+            full_name = #{fullName}
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from cart where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from cart where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findAll" resultType="Cart">
+        <include refid="SelectPrefix"/>
+    </select>
+    <select id="findById" resultType="Cart">
+        <include refid="SelectPrefix"/>
+        where id = #{id}
+    </select>
+    <select id="findByCondition" resultType="Cart">
+        <include refid="SelectPrefix"/>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>

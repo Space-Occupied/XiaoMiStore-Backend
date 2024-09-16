@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.manage.dao.UserDao">
+    <sql id="ManagerSelectPrefix">
+        select id,
+               username,
+               nickname,
+               avatar,
+               sex,
+               phone,
+               email,
+               address,
+               real_name,
+               registration_time,
+               last_login,
+               disabled
+        from user
+    </sql>
+    <insert id="save">
+        insert into user (username, password, nickname, avatar, sex, phone, email, address, registration_time,
+                          last_login)
+        values (#{username}, #{password}, #{nickname}, #{avatar}, #{sex}, #{phone}, #{email}, #{address}, now(), now())
+    </insert>
+    <update id="update">
+        update user
+        set nickname = #{nickname},
+            sex = #{sex},
+            phone = #{phone},
+            address = #{address},
+            email = #{email},
+            avatar = #{avatar}
+        where id = #{id}
+    </update>
+    <update id="changePassword">
+        update user
+        set password = #{password}
+        where id = #{id}
+    </update>
+    <update id="updateLastLogin">
+        update user
+        set last_login = now()
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from user where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from user where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findAll" resultType="User">
+        <include refid="ManagerSelectPrefix"/>
+    </select>
+    <select id="findById" resultType="User">
+        <include refid="ManagerSelectPrefix"/>
+        where id = #{id}
+    </select>
+    <select id="findByCondition" resultType="User">
+        <include refid="ManagerSelectPrefix"/>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+            <if test="username!=null and username!=''">
+                <bind name="usernameLike" value="'%'+username+'%'"/>
+                and username like #{usernameLike}
+            </if>
+            <if test="phone!=null and phone!=''">
+                <bind name="phoneLike" value="'%'+phone+'%'"/>
+                and phone like #{phoneLike}
+            </if>
+            <if test="email!=null and email!=''">
+                <bind name="emailLike" value="'%'+email+'%'"/>
+                and email like #{emailLike}
+            </if>
+            <if test="nickname!=null and nickname!=''">
+                <bind name="nicknameLike" value="'%'+nickname+'%'"/>
+                and nickname like #{nicknameLike}
+            </if>
+<!--            <if test="wechat!=null and wechat!=''">-->
+<!--                <bind name="wechatLike" value="'%'+wechat+'%'"/>-->
+<!--                and wechat like #{wechatLike}-->
+<!--            </if>-->
+            <if test="sex!=null and sex!=''">
+                and sex = #{sex}
+            </if>
+            <if test="registrationDateStart!=null">
+                and registration_time &gt;= #{registrationDateStart}
+            </if>
+            <if test="registrationDateEnd!=null">
+                and registration_time &lt; #{registrationDateEnd}
+            </if>
+        </where>
+    </select>
+    <select id="findByUsername" resultType="User">
+        select id,
+               avatar,
+               username,
+               password,
+               phone
+        from user
+        where username = #{username}
+    </select>
+</mapper>

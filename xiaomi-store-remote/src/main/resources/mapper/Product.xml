@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.remote.dao.ProductDao">
+    <sql id="SelectPrefix">
+        select id,
+               name,
+               price,
+               old_price,
+               description,
+               category_id,
+               desc_pre,
+               is_del
+        from product
+    </sql>
+    <insert id="save">
+        insert into product (name, price, old_price, description, category_id, desc_pre, is_del)
+        values (#{name}, #{price}, #{oldPrice}, #{description}, #{categoryId}, #{descPre}, #{isDel})
+    </insert>
+    <update id="update">
+        update product
+        set name = #{name},
+            price = #{price},
+            old_price = #{oldPrice},
+            description = #{description},
+            category_id = #{categoryId},
+            desc_pre = #{descPre},
+            is_del = #{isDel}
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from product where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from product where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findAll" resultType="Product">
+        <include refid="SelectPrefix"/>
+    </select>
+    <select id="findById" resultType="Product">
+        <include refid="SelectPrefix"/>
+        where id = #{id}
+    </select>
+    <select id="findByCondition" resultType="Product">
+        <include refid="SelectPrefix"/>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>

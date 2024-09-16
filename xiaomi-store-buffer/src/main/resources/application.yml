@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: xiaomi-store-buffer
+  devtools:
+    livereload:
+      port: 35731
+
+server:
+  port: 8002

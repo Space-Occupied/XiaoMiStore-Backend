@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.manage.dao.ImageDao">
+    <sql id="SelectPrefix">
+        select id,
+               type,
+               sub_id,
+               url
+        from image
+    </sql>
+    <insert id="save">
+        insert into image (type, sub_id, url)
+        values (#{type}, #{subId}, #{url})
+    </insert>
+    <insert id="saveWithUniqueId">
+        insert into image (id, type, sub_id, url)
+        values (#{id}, #{type}, #{subId}, #{url})
+    </insert>
+    <update id="update">
+        update image
+        set type = #{type},
+            sub_id = #{subId},
+            url = #{url}
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from image where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from image where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findAll" resultType="Image">
+        <include refid="SelectPrefix"/>
+    </select>
+    <select id="findById" resultType="Image">
+        <include refid="SelectPrefix"/>
+        where id = #{id}
+    </select>
+    <select id="findByCondition" resultType="Image">
+        <include refid="SelectPrefix"/>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>

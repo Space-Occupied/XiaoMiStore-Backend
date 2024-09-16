@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.manage.dao.HistoryDao">
+    <sql id="SelectPrefix">
+        select id,
+               user_id,
+               product_id,
+               view_time
+        from history
+    </sql>
+    <insert id="save">
+        insert into history (user_id, product_id, view_time)
+        values (#{userId}, #{productId}, now())
+    </insert>
+    <insert id="saveWithUniqueId">
+        insert into history (id, user_id, product_id, view_time)
+        values (#{id}, #{userId}, #{productId}, now())
+    </insert>
+    <update id="update">
+        update history
+        set user_id = #{userId},
+            product_id = #{productId},
+            view_time = #{viewTime}
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from history where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from history where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findAll" resultType="History">
+        <include refid="SelectPrefix"/>
+    </select>
+    <select id="findById" resultType="History">
+        <include refid="SelectPrefix"/>
+        where id = #{id}
+    </select>
+    <select id="findByCondition" resultType="History">
+        <include refid="SelectPrefix"/>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>
