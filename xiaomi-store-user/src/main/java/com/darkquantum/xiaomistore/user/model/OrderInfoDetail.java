@@ -8,13 +8,15 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class ProductChoice {
+public class OrderInfoDetail {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long oid;
-    private String option_name;
-    private String choice_name;
+    private Long order_id;
+    private String uid;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long pid;
+    private Integer quantity;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long action_id;
+    private String order_full_name;
     private BigDecimal price;
-    private BigDecimal old_price;
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long cid;
 }

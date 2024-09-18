@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.user.dao.FavoriteDao">
+    <resultMap id="favoriteMap" type="com.darkquantum.xiaomistore.user.model.Favorite">
+        <id column="id" property="collection_id"/>
+        <id column="username" property="uid"/>
+        <id column="product_id" property="pid"/>
+        <id column="name" property="pname"/>
+        <id column="price" property="min_price"/>
+    </resultMap>
+    <insert id="addFavorite">
+        insert into favorite (id, user_id, product_id)
+        values (#{id}, #{user_id}, #{product_id})
+    </insert>
+    <delete id="removeFavorite">
+        delete from favorite
+        where user_id = #{user_id} and product_id = #{product_id}
+    </delete>
+    <select id="getFavoritesByUsername" resultMap="favoriteMap">
+        select distinct favorite.id, username, product_id, name, price from favorite
+        inner join user on favorite.user_id = user.id
+        inner join product on favorite.product_id = product.id
+        where username = #{username}
+    </select>
+
+</mapper>

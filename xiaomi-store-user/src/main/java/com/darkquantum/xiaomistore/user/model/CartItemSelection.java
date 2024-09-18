@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
-public class ProductOption {
+public class CartItemSelection {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long oid;
-    private String option_name;
+    private Long cid;
+    private BigDecimal price;
 }

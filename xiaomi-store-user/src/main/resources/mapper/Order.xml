@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.user.dao.OrderDao">
+    <resultMap id="orderInfoMap" type="com.darkquantum.xiaomistore.user.model.OrderInfo">
+        <id column="id" property="order_id"/>
+        <id column="create_time" property="order_time"/>
+        <id column="total_price" property="order_overhead"/>
+        <id column="phone_num" property="phonenum"/>
+        <id column="address" property="addr"/>
+        <id column="user_real_name" property="order_client_realname"/>
+        <id column="user_id" property="uid"/>
+    </resultMap>
+    <resultMap id="orderInfoDetailMap" type="com.darkquantum.xiaomistore.user.model.OrderInfoDetail">
+        <id column="order_id" property="order_id"/>
+        <id column="product_id" property="pid"/>
+        <id column="quantity" property="quantity"/>
+        <id column="id" property="action_id"/>
+        <id column="order_full_name" property="order_full_name"/>
+        <id column="price" property="price"/>
+    </resultMap>
+    <insert id="addOrder">
+        insert into `order` (id, total_price, user_id, create_time, phone_num, address, user_real_name)
+        values (#{id}, #{order_overhead}, #{user_id}, now(), #{phonenum}, #{addr}, #{order_client_realname})
+    </insert>
+    <insert id="addOrderDetail">
+        insert into order_detail (id, order_id, user_id, product_id, quantity, order_full_name, price)
+        values (#{cartInfo.cart_id}, #{id}, #{cartInfo.user_id}, #{cartInfo.pid}, #{cartInfo.quantity}, #{cartInfo.fullname}, #{totalPrice})
+    </insert>
+    <update id="removeOrder">
+        update `order` set is_del = 1 where id = #{id}
+    </update>
+    <select id="getOrderList" resultMap="orderInfoMap">
+        select id, create_time, total_price, phone_num, address, user_real_name from `order`
+        where user_id = #{id} and is_del is null
+    </select>
+    <select id="getOrderDetailList" resultMap="orderInfoDetailMap">
+        select id, order_id, product_id, quantity, order_full_name, price from order_detail
+        where order_id = #{id}
+    </select>
+    <select id="getAOrder" resultMap="orderInfoMap">
+        select id, user_id, create_time, total_price, phone_num, address, user_real_name from `order`
+        where id = #{id} and is_del is null
+    </select>
+
+</mapper>

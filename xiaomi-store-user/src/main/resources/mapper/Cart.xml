@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.darkquantum.xiaomistore.user.dao.CartDao">
+    <resultMap id="cartInfoDetailMap" type="com.darkquantum.xiaomistore.user.model.CartInfoDetail">
+        <id column="name" property="pname"/>
+        <id column="price" property="min_price"/>
+    </resultMap>
+    <resultMap id="cartChoiceMap" type="com.darkquantum.xiaomistore.user.model.CartChoice">
+        <id column="name" property="choice_name"/>
+        <id column="price" property="price"/>
+    </resultMap>
+    <resultMap id="cartInfoMap" type="com.darkquantum.xiaomistore.user.model.CartInfo">
+        <id column="id" property="cart_id"/>
+        <id column="product_id" property="pid"/>
+        <id column="quantity" property="quantity"/>
+        <id column="full_name" property="fullname"/>
+        <id column="user_id" property="user_id"/>
+        <association property="detail" column="product_id" select="com.darkquantum.xiaomistore.user.dao.CartDao.findCartInfoDetail"/>
+        <collection property="choices" column="id" select="com.darkquantum.xiaomistore.user.dao.CartDao.findCartChoiceList"/>
+    </resultMap>
+    <insert id="addToCart">
+        insert into cart (id, user_id, product_id, quantity, full_name)
+        values (#{id}, #{uid}, #{pid}, #{quantity}, #{full_name})
+    </insert>
+    <insert id="addActionChoice">
+        insert into action_choice (id, action_id, choice_id)
+        values (#{id}, #{action_id}, #{choice_id})
+    </insert>
+    <update id="modifyQuantity">
+        update cart set quantity = #{quantity} where id = #{id}
+    </update>
+    <delete id="deleteCart">
+        delete from cart where id = #{id}
+    </delete>
+    <select id="findCartInfoByUser" resultMap="cartInfoMap">
+        select id, product_id, quantity, user_id from cart
+        where user_id = #{id}
+    </select>
+    <select id="findCartInfoDetail" resultMap="cartInfoDetailMap">
+        select name, price from product where id = #{id}
+    </select>
+    <select id="findCartChoiceList" resultMap="cartChoiceMap">
+        select name, price from choice t1
+        inner join action_choice t2 on t1.id = t2.choice_id
+        where t2.action_id = #{id}
+    </select>
+    <select id="findById" resultMap="cartInfoMap">
+        select user_id, product_id, quantity, full_name from cart
+        where id = #{id}
+    </select>
+
+</mapper>

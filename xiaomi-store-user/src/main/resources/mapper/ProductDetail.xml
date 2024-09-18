@@ -24,6 +24,12 @@
         <id property="old_price" column="old_price"/>
         <id property="choice_name" column="name"/>
     </resultMap>
+    <resultMap id="recommendProductMap" type="com.darkquantum.xiaomistore.user.model.RecommendProduct">
+        <id property="pid" column="id"/>
+        <id property="pname" column="name"/>
+        <id property="min_price" column="price"/>
+        <id property="img_path" column="url"/>
+    </resultMap>
     <select id="findById" resultType="Long">
         select id from product
         where temp_pid = #{id}
@@ -43,6 +49,15 @@
     <select id="findProductChoice" resultMap="productChoiceMap">
         select id, name, price, old_price from choice
         where option_id = #{id}
+    </select>
+    <select id="findCoverImage" resultType="java.lang.String">
+        select url from image
+        where sub_id = #{id} and type = 'product' limit 1
+    </select>
+    <select id="findRecommendProduct" resultMap="recommendProductMap">
+        select product.id, name, price, url from product
+        inner join image on product.id = image.sub_id and image.type = 'product'
+        order by rand() limit #{limit}
     </select>
 
 </mapper>

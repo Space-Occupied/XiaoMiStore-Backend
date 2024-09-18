@@ -1,9 +1,6 @@
 package com.darkquantum.xiaomistore.user.dao;
 
-import com.darkquantum.xiaomistore.user.model.ProductChoice;
-import com.darkquantum.xiaomistore.user.model.ProductDetail;
-import com.darkquantum.xiaomistore.user.model.ProductImagePath;
-import com.darkquantum.xiaomistore.user.model.ProductOption;
+import com.darkquantum.xiaomistore.user.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,4 +11,6 @@ public interface ProductDetailDao {
     List<ProductImagePath> findProductImagePath(Long id);
     List<ProductOption> findProductOption(Long id);
     List<ProductChoice> findProductChoice(Long id);
+    String findCoverImage(Long id);
+    List<RecommendProduct> findRecommendProduct(Integer limit);
 }
