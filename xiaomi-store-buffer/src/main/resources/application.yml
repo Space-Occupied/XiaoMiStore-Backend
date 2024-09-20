@@ -4,6 +4,34 @@ spring:
   devtools:
     livereload:
       port: 35731
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/xiaomi_store?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: "kafka-orders"
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    properties:
+      spring:
+        json:
+          trusted:
+            packages: com.darkquantum.xiaomistore.common.model
 
 server:
   port: 8002
+
+mybatis:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.darkquantum.xiaomistore.common.model
+  configuration:
+    map-underscore-to-camel-case: true
+    log-prefix: mybatis.
+    log-impl: org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl
+
+logging:
+  level:
+    mybatis: DEBUG

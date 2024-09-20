@@ -1,4 +1,4 @@
-package com.darkquantum.xiaomistore.user.dao;
+package com.darkquantum.xiaomistore.buffer.dao;
 
 import com.darkquantum.xiaomistore.common.model.CartChoice;
 import com.darkquantum.xiaomistore.common.model.CartInfo;

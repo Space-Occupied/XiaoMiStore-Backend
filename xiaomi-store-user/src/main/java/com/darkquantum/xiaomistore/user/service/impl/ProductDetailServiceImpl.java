@@ -7,6 +7,8 @@ import com.darkquantum.xiaomistore.user.model.ProductImagePath;
 import com.darkquantum.xiaomistore.user.model.ProductOption;
 import com.darkquantum.xiaomistore.user.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CacheConfig(cacheNames = "com.darkquantum.xiaomistore.user.service.impl.ProductDetailServiceImpl")
 @Service
 public class ProductDetailServiceImpl implements ProductDetailService {
     ProductDetailDao productDetailDao;
@@ -51,6 +54,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return res;
     }
 
+    @Cacheable
     @Override
     public List<Map<String, Object>> getProductDetail(Long id) {
         List<Map<String, Object>> res = new ArrayList<>();

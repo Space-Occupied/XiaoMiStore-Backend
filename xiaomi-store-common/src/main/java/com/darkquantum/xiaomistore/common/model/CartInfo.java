@@ -1,4 +1,4 @@
-package com.darkquantum.xiaomistore.user.model;
+package com.darkquantum.xiaomistore.common.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

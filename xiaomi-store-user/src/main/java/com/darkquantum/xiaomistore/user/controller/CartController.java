@@ -1,7 +1,7 @@
 package com.darkquantum.xiaomistore.user.controller;
 
-import com.darkquantum.xiaomistore.user.model.CartInfo;
-import com.darkquantum.xiaomistore.user.model.PurchaseInfo;
+import com.darkquantum.xiaomistore.common.model.CartInfo;
+import com.darkquantum.xiaomistore.common.model.PurchaseInfo;
 import com.darkquantum.xiaomistore.user.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

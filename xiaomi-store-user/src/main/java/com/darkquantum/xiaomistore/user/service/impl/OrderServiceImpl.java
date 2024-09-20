@@ -59,6 +59,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Map<String, Object> getAOrderInfo(Long id) {
         OrderInfo orderInfo = orderDao.getAOrder(id);
+        if (orderInfo == null) {
+            return Map.of("ok", false);
+        }
         Map<String, Object> map = new HashMap<>();
         User user = userService.getUserById(orderInfo.getUid());
         orderInfo.setOrder_client(user.getUsername());
@@ -68,6 +71,7 @@ public class OrderServiceImpl implements OrderService {
             orderInfoDetail.setUid(user.getUsername());
         }
         map.put("list", orderInfoDetailList);
+        map.put("ok", true);
         return map;
     }
 
